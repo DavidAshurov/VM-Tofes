@@ -3,6 +3,7 @@ import {Positions} from "../../utils/constants.ts";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {addShiftEmployee, deleteShiftEmployee} from "../../features/shiftSlice.ts";
 import {getEnumKeyByValue} from "../../utils/functions.ts";
+import {ServiceManager} from "../../utils/types";
 
 interface Props {
     position: Positions
@@ -14,7 +15,7 @@ const PartOfTeam = ({position}: Props) => {
     return (
         <div>
             <h1 className={'text-xl font-bold mb-2'}>{position}</h1>
-            {shiftEmployees.map((emp,idx) => <EmployeeInfoInput key={idx} index={idx} position={position} shiftEmployee={emp}/>)}
+            {shiftEmployees.map((emp:ServiceManager,idx:number) => <EmployeeInfoInput key={idx} index={idx} position={position} shiftEmployee={emp}/>)}
             <div className={'flex justify-center'}>
                 <button
                     onClick={() => {

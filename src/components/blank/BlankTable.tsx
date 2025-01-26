@@ -49,7 +49,7 @@ const BlankTable = ({position}: Props) => {
                 </tr>
                 </thead>
                 <tbody>
-                {employees.map((emp:ServiceManager,idx) =>
+                {employees.map((emp:ServiceManager,idx:number) =>
                     <tr key={idx}>
                         <td>{emp.sum?.toFixed(1)}</td>
                         {hoursWithSpecials && <td>{emp.inHourWithSpecials?.toFixed(1)}</td>}

@@ -35,7 +35,7 @@ const EmployeeInfoInput = ({position, index, shiftEmployee}: Props) => {
                                    onChange={(e) => employeeInfoHandler(e)}
                                    defaultValue={shiftEmployee.name}>
                 <option value={''}>Выберите...</option>
-                {employees.map((name, idx) => <option value={name} key={idx}>{name}</option>)}
+                {employees.map((name:string, idx:number) => <option value={name} key={idx}>{name}</option>)}
             </select>
             </label>
             {wageRate && <label>

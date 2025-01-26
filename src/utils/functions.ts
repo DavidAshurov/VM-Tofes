@@ -1,7 +1,8 @@
 import {current} from "@reduxjs/toolkit";
 import {Positions, Wages} from "./constants.ts";
+import {ServiceManager, ShiftData} from "./types";
 
-export function getEnumKeyByValue(enumObj: any, value: string): string{
+export function getEnumKeyByValue(enumObj: Positions, value: string): string{
     const keys = Object.keys(enumObj)
     for (let i = 0; i < keys.length; i++) {
         if (enumObj[keys[i]] === value) {
@@ -11,10 +12,10 @@ export function getEnumKeyByValue(enumObj: any, value: string): string{
     return ''
 }
 
-export function calculateTips(state) {
+export function calculateTips(state:ShiftData) {
     const {tipsSum, serviceManagers, waiters, runners, shabat} = current(state)
     const minWages = getMinimalWages(shabat ? 'shabat' : '')
-    const employees = serviceManagers.concat(waiters,runners)
+    const employees = serviceManagers.concat(waiters,runners as ServiceManager[])
     const minSum = employees.reduce((acc,curr) => acc + curr.hours * minWages.get(curr.wageRate),0)
     if (minSum > tipsSum) {
         fulfillData(state, minWages)

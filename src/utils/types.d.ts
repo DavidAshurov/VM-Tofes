@@ -27,12 +27,12 @@ export interface Bartender extends Runner {
 }
 export interface Waiter extends Runner {
     specials:number,
-    wageRate:number,
+    wageRate:string,
     inHourWithSpecials:number,
 }
 export interface ServiceManager extends Runner {
     specials:number,
-    wageRate:number,
+    wageRate:string,
     inHourWithSpecials:number,
 }
 export interface hourWages {
