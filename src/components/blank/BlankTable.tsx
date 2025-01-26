@@ -1,6 +1,7 @@
 import {BlankHebrewWords as Hebrew, Positions} from "../../utils/constants.ts";
 import {useAppSelector} from "../../app/hooks.ts";
 import {getEnumKeyByValue} from "../../utils/functions.ts";
+import {ServiceManager} from "../../utils/types";
 
 interface Props {
     position: Positions,
@@ -48,7 +49,7 @@ const BlankTable = ({position}: Props) => {
                 </tr>
                 </thead>
                 <tbody>
-                {employees.map((emp,idx) =>
+                {employees.map((emp:ServiceManager,idx) =>
                     <tr key={idx}>
                         <td>{emp.sum?.toFixed(1)}</td>
                         {hoursWithSpecials && <td>{emp.inHourWithSpecials?.toFixed(1)}</td>}

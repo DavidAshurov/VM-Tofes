@@ -1,14 +1,14 @@
 import {current} from "@reduxjs/toolkit";
 import {Positions, Wages} from "./constants.ts";
 
-export function getEnumKeyByValue(enumObj: any, value: string): string | undefined {
+export function getEnumKeyByValue(enumObj: any, value: string): string{
     const keys = Object.keys(enumObj)
     for (let i = 0; i < keys.length; i++) {
         if (enumObj[keys[i]] === value) {
             return keys[i]
         }
     }
-    return undefined
+    return ''
 }
 
 export function calculateTips(state) {
