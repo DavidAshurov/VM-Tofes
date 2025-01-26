@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Cookie&display=swap');
+
+@tailwind base;
+@layer base {
+    body {
+        @apply bg-background-blue
+    }
+}
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+}
+input,select {
+    background-color: rgba(59,130,246,1);
+    border-radius: 0.5rem;
+    color: white;
+    margin-right: 0.75rem;
+    cursor: pointer;
+}
+input:hover,select:hover,button:hover {
+    background-color: #0065C7;
+}
+input[type="number"] {
+    text-align: center;
+}
+::placeholder {
+    color: white;
+}
+th,td {
+    border: 2px solid black;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-align: center;
+}
+td {
+    font-weight: 600;
+}
