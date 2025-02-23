@@ -1,17 +1,14 @@
-import {ShiftData} from "../utils/types";
-import {createSlice} from "@reduxjs/toolkit";
+import {Employee, ShiftData} from "../utils/types";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Positions} from "../utils/constants.ts";
-import {calculateTips, getEnumKeyByValue} from "../utils/functions.ts";
+import {calculateTips} from "../utils/functions.ts";
 
 const initialShiftData: ShiftData = {
     date: '',
     shift: 'morning',
     shabat: false,
     tipsSum: 0,
-    serviceManagers: [],
-    waiters: [],
-    runners: [],
-    bartenders: [],
+    employees: [],
     completion:0,
     totalSum:0,
 }
@@ -33,27 +30,46 @@ const shiftSlice = createSlice({
             state.tipsSum = action.payload ? +action.payload : 0
         },
         addShiftEmployee: (state, action) => {
+            let wageRate = '';
             switch (action.payload) {
                 case Positions.serviceManagers:
-                    state[getEnumKeyByValue(Positions, action.payload)].push({wageRate:"100",hours:0,specials:0})
+                    wageRate = '100'
                     break
                 case Positions.waiters:
-                    state[getEnumKeyByValue(Positions, action.payload)].push({wageRate:"MM",hours:0,specials:0})
+                    wageRate = 'MM'
                     break
                 case Positions.runners:
-                    state[getEnumKeyByValue(Positions, action.payload)].push({wageRate:"R",hours:0})
+                    wageRate = 'R'
                     break
-                case Positions.bartenders:
-                    state[getEnumKeyByValue(Positions, action.payload)].push({})
             }
+            const id = state.employees.length + 1
+            state.employees.push({
+                position:action.payload,
+                wageRate:wageRate,
+                id:id,
+                name:'',
+                hours:0,
+                inHour:0,
+                sum:0,
+                specials:0,
+                inHourWithSpecials:0,
+            })
         },
         deleteShiftEmployee: (state, action) => {
-            state[getEnumKeyByValue(Positions, action.payload)].pop()
+            const employees = state.employees.filter(emp => emp.position === action.payload)
+            const id = employees[employees.length - 1].id
+            state.employees = state.employees.filter(emp => emp.id !== id)
         },
-        setEmployeeInfo: (state, action) => {
+        setEmployeeInfo: (state:ShiftData, action:PayloadAction<{position:Positions,index:number,property:keyof Employee,value:string}>) => {
             const {position, index, property, value} = action.payload
-            state[getEnumKeyByValue(Positions, position)][index][property] =
-                (property === 'hours' || property === 'specials') ? +value : value
+            const emps = state.employees.filter(emp => emp.position === position)
+            const idx = state.employees.findIndex(emp => emp.id === emps[index]?.id)
+            if (idx === -1) return
+            if (typeof state.employees[idx][property] === 'string') {
+                state.employees[idx][property] = value as never
+            } else {
+                state.employees[idx][property] = +value as never
+            }
         },
         distributeTips: (state) => calculateTips(state),
     }

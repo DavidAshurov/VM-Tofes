@@ -2,7 +2,7 @@ import EmployeeInfoInput from "./EmployeeInfoInput.tsx";
 import {Positions} from "../../utils/constants.ts";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {addShiftEmployee, deleteShiftEmployee} from "../../features/shiftSlice.ts";
-import {getEnumKeyByValue} from "../../utils/functions.ts";
+import {Employee} from "../../utils/types";
 
 interface Props {
     position: Positions
@@ -10,7 +10,7 @@ interface Props {
 
 const PartOfTeam = ({position}: Props) => {
     const dispatch = useAppDispatch()
-    const shiftEmployees = useAppSelector(state => state.shiftReducer[getEnumKeyByValue(Positions,position)])
+    const shiftEmployees:Employee[] = useAppSelector(state => state.shiftReducer["employees"]).filter(emp => emp.position === position)
     return (
         <div>
             <h1 className={'text-xl font-bold mb-2'}>{position}</h1>

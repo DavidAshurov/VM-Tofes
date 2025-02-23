@@ -1,12 +1,11 @@
+import {Positions} from "./constants.ts";
+
 export interface ShiftData {
     date:string,
     shift:string,
     shabat:boolean,
     tipsSum:number,
-    serviceManagers: ServiceManager[],
-    waiters: Waiter[],
-    runners: Runner[],
-    bartenders: Bartender[],
+    employees:Employee[],
     completion:number,
     totalSum:number,
 }
@@ -16,26 +15,19 @@ export interface Employees {
     runners: string[],
     bartenders: string[],
 }
-export interface Runner {
+export interface Employee {
+    id:number,
     name:string,
     hours:number,
     inHour:number,
     sum:number,
-}
-export interface Bartender extends Runner {
     specials:number,
-}
-export interface Waiter extends Runner {
-    specials:number,
-    wageRate:number,
+    wageRate:string,
     inHourWithSpecials:number,
+    position:Positions,
 }
-export interface ServiceManager extends Runner {
-    specials:number,
-    wageRate:number,
-    inHourWithSpecials:number,
-}
-export interface hourWages {
+
+export interface HourWages {
     '100%':number,
     '90%':number,
     '80%':number,

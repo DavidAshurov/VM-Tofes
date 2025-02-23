@@ -1,7 +1,6 @@
 import {BlankHebrewWords as Hebrew, Positions} from "../../utils/constants.ts";
 import {useAppSelector} from "../../app/hooks.ts";
-import {getEnumKeyByValue} from "../../utils/functions.ts";
-import {ServiceManager} from "../../utils/types";
+import {Employee} from "../../utils/types";
 
 interface Props {
     position: Positions,
@@ -9,18 +8,17 @@ interface Props {
 
 const BlankTable = ({position}: Props) => {
     let specials = false
-    let hoursWithSpecials = false
     const tableHeaders = [Hebrew.blankSum as string]
     let mainTableHeader = ''
     switch (position) {
         case Positions.serviceManagers || Positions.waiters:
             mainTableHeader = Hebrew.blankServiceManagers
-            specials = hoursWithSpecials = true
+            specials = true
             tableHeaders.push(Hebrew.blankInHourWithSpecials as string, Hebrew.blankSpecials as string)
             break
         case Positions.waiters:
             mainTableHeader = Hebrew.blankWaiters
-            specials = hoursWithSpecials = true
+            specials = true
             tableHeaders.push(Hebrew.blankInHourWithSpecials as string, Hebrew.blankSpecials as string)
             break
         case Positions.runners:
@@ -36,7 +34,7 @@ const BlankTable = ({position}: Props) => {
         Hebrew.blankInHour as string,
         Hebrew.blankName as string,
     )
-    const employees = useAppSelector(state => state.shiftReducer[getEnumKeyByValue(Positions, position)])
+    const employees = useAppSelector(state =>  state.shiftReducer['employees']).filter(emp => emp.position === position)
     return (
         <div className={'flex justify-center'}>
             <table className={'border-black border-4 my-3 w-3/4'}>
@@ -49,10 +47,10 @@ const BlankTable = ({position}: Props) => {
                 </tr>
                 </thead>
                 <tbody>
-                {employees.map((emp:ServiceManager,idx) =>
+                {employees.map((emp:Employee,idx:number) =>
                     <tr key={idx}>
                         <td>{emp.sum?.toFixed(1)}</td>
-                        {hoursWithSpecials && <td>{emp.inHourWithSpecials?.toFixed(1)}</td>}
+                        <td>{emp.inHourWithSpecials?.toFixed(1)}</td>
                         {specials && <td>{emp.specials}</td>}
                         <td>{emp.hours}</td>
                         <td>{emp.inHour?.toFixed(1)}</td>

@@ -3,18 +3,19 @@ import {ChangeEvent} from "react";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {setEmployeeInfo} from "../../features/shiftSlice.ts";
 import {getEnumKeyByValue} from "../../utils/functions.ts";
-import {ServiceManager} from "../../utils/types";
+import {Employee, Employees} from "../../utils/types";
 
 interface Props {
     position: Positions,
     index: number,
-    shiftEmployee: ServiceManager,
+    shiftEmployee: Employee,
 }
 
 const EmployeeInfoInput = ({position, index, shiftEmployee}: Props) => {
     const dispatch = useAppDispatch()
 
-    const employees = useAppSelector(state => state.employeesReducer[getEnumKeyByValue(Positions, position)])
+    const key = getEnumKeyByValue(Positions,position) as keyof Employees
+    const employees:string[] = useAppSelector(state => state.employeesReducer[key])
 
     const specials = position !== Positions.runners
     const wageRate = position === Positions.serviceManagers || position === Positions.waiters
@@ -23,7 +24,7 @@ const EmployeeInfoInput = ({position, index, shiftEmployee}: Props) => {
         dispatch(setEmployeeInfo({
             position: position,
             index: index,
-            property: event.target.name,
+            property: event.target.name as keyof Employee,
             value: event.target.value,
         }))
     }
