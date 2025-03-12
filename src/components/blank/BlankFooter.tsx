@@ -10,20 +10,20 @@ const BlankFooter = () => {
                 <tbody>
                 <tr>
                     <td className={'text-xl'}>{shiftData.tipsSum}</td>
-                    <td className={'w-1/3 text-xl text-red-500'}>{BlankHebrewWords.blankCash}</td>
+                    <td className={'w-1/3 text-xl text-red-500'}>{BlankHebrewWords.cash}</td>
                     <td rowSpan={0} className={'w-1/4'}></td>
                 </tr>
                 <tr>
                     <td className={'text-xl'}>{Math.round(shiftData.completion)}</td>
-                    <td className={'text-xl text-red-500'}>{BlankHebrewWords.blankCompletion}</td>
+                    <td className={'text-xl text-red-500'}>{BlankHebrewWords.completion}</td>
                 </tr>
                 <tr>
                     <td className={'text-xl'}>{Math.round(shiftData.totalSum)}</td>
-                    <td className={'text-xl text-red-500'}>{BlankHebrewWords.blankTotalSum}</td>
+                    <td className={'text-xl text-red-500'}>{BlankHebrewWords.totalSum}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td className={'text-xl'}>{BlankHebrewWords.blankWaiterName}</td>
+                    <td className={'text-xl'}>{BlankHebrewWords.waiterName}</td>
                 </tr>
                 </tbody>
             </table>

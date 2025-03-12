@@ -14,7 +14,7 @@ const PartOfTeam = ({position}: Props) => {
     return (
         <div>
             <h1 className={'text-xl font-bold mb-2'}>{position}</h1>
-            {shiftEmployees.map((emp,idx) => <EmployeeInfoInput key={idx} index={idx} position={position} shiftEmployee={emp}/>)}
+            {shiftEmployees.map((emp,idx) => <EmployeeInfoInput key={idx} position={position} shiftEmployee={emp}/>)}
             <div className={'flex justify-center'}>
                 <button
                     onClick={() => {

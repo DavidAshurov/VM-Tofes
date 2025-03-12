@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {setDate, setShabat, setShift, setTipsSum} from "../../features/shiftSlice.ts";
+import {setDate, setMinWage, setShift, setTipsSum} from "../../features/shiftSlice.ts";
 
 const CommonInfo = () => {
     const dispatch = useAppDispatch()
@@ -19,14 +19,17 @@ const CommonInfo = () => {
                 <option value={'evening'}>Вечер</option>
             </select>
             </label>
-            <label>Шабат:</label>
-            <div className={'w-5 h-5 mt-0.5 ml-1 mr-5'}>
-                <input className={'w-full h-full'} name={'shabat'} type={'checkbox'}
-                       onChange={(e) => dispatch(setShabat(e.target.checked))}
-                       checked={shiftInfo.shabat}/>
-            </div>
             <label>
-                Сумма чаевых: <input
+                Ашлама: <select name={'minWage'}
+                                onChange={(e) => dispatch(setMinWage(e.target.value))}
+                                defaultValue={shiftInfo.minWage}>
+                <option value={'usual'}>Обычная</option>
+                <option value={'increased'}>Повышенная(50)</option>
+                <option value={'shabat'}>Шабат</option>
+            </select>
+            </label>
+            <label>
+                Чаевые: <input
                 onChange={(e) => dispatch(setTipsSum(e.target.value))}
                 className={'pl-3 w-[100px]'} min={0} name={"tips"} type={'number'} placeholder={'0'}
                 defaultValue={shiftInfo.tipsSum}/>

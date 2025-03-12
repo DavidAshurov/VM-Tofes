@@ -3,7 +3,7 @@ import {Positions} from "./constants.ts";
 export interface ShiftData {
     date:string,
     shift:string,
-    shabat:boolean,
+    minWage:string,
     tipsSum:number,
     employees:Employee[],
     completion:number,

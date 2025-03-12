@@ -6,12 +6,14 @@ import {calculateTips} from "../utils/functions.ts";
 const initialShiftData: ShiftData = {
     date: '',
     shift: 'morning',
-    shabat: false,
+    minWage:'usual',
     tipsSum: 0,
     employees: [],
     completion:0,
     totalSum:0,
 }
+
+let idCounter = 0
 
 const shiftSlice = createSlice({
     name: "shift",
@@ -23,8 +25,8 @@ const shiftSlice = createSlice({
         setShift: (state, action) => {
             state.shift = action.payload
         },
-        setShabat: (state, action) => {
-            state.shabat = action.payload
+        setMinWage: (state, action) => {
+            state.minWage = action.payload
         },
         setTipsSum: (state, action) => {
             state.tipsSum = action.payload ? +action.payload : 0
@@ -42,7 +44,7 @@ const shiftSlice = createSlice({
                     wageRate = 'R'
                     break
             }
-            const id = state.employees.length + 1
+            const id = idCounter++
             state.employees.push({
                 position:action.payload,
                 wageRate:wageRate,
@@ -60,10 +62,9 @@ const shiftSlice = createSlice({
             const id = employees[employees.length - 1].id
             state.employees = state.employees.filter(emp => emp.id !== id)
         },
-        setEmployeeInfo: (state:ShiftData, action:PayloadAction<{position:Positions,index:number,property:keyof Employee,value:string}>) => {
-            const {position, index, property, value} = action.payload
-            const emps = state.employees.filter(emp => emp.position === position)
-            const idx = state.employees.findIndex(emp => emp.id === emps[index]?.id)
+        setEmployeeInfo: (state:ShiftData, action:PayloadAction<{id:number,property:keyof Employee,value:string}>) => {
+            const {id, property, value} = action.payload
+            const idx = state.employees.findIndex(emp => emp.id === id)
             if (idx === -1) return
             if (typeof state.employees[idx][property] === 'string') {
                 state.employees[idx][property] = value as never
@@ -78,7 +79,7 @@ const shiftSlice = createSlice({
 export const {
     setDate,
     setShift,
-    setShabat,
+    setMinWage,
     setTipsSum,
     addShiftEmployee,
     deleteShiftEmployee,

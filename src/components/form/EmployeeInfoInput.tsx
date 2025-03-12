@@ -7,23 +7,21 @@ import {Employee, Employees} from "../../utils/types";
 
 interface Props {
     position: Positions,
-    index: number,
     shiftEmployee: Employee,
 }
 
-const EmployeeInfoInput = ({position, index, shiftEmployee}: Props) => {
+const EmployeeInfoInput = ({position, shiftEmployee}: Props) => {
     const dispatch = useAppDispatch()
 
-    const key = getEnumKeyByValue(Positions,position) as keyof Employees
-    const employees:string[] = useAppSelector(state => state.employeesReducer[key])
+    const key = getEnumKeyByValue(Positions, position) as keyof Employees
+    const employees: string[] = useAppSelector(state => state.employeesReducer[key])
 
     const specials = position !== Positions.runners
     const wageRate = position === Positions.serviceManagers || position === Positions.waiters
 
     const employeeInfoHandler = (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         dispatch(setEmployeeInfo({
-            position: position,
-            index: index,
+            id:shiftEmployee.id,
             property: event.target.name as keyof Employee,
             value: event.target.value,
         }))
@@ -39,6 +37,13 @@ const EmployeeInfoInput = ({position, index, shiftEmployee}: Props) => {
                 {employees.map((name, idx) => <option value={name} key={idx}>{name}</option>)}
             </select>
             </label>
+
+            {/*<label>Сотрудник:*/}
+            {/*    <input list={"option-list"} name={"name"}/>*/}
+            {/*    <datalist id="option-list">*/}
+            {/*        {employees.map((name, idx) => <option value={name} key={idx}>{name}</option>)}*/}
+            {/*    </datalist>*/}
+            {/*</label>*/}
             {wageRate && <label>
                 Ставка: <select name={'wageRate'}
                                 onChange={(e) => employeeInfoHandler(e)}
@@ -49,18 +54,18 @@ const EmployeeInfoInput = ({position, index, shiftEmployee}: Props) => {
                 <option value={'80'}>80%</option>
             </select>
             </label>}
-            <label>
+            {position !== Positions.bartenders && <label>
                 Часы работы: <input onChange={(e) => employeeInfoHandler(e)}
                                     className={'w-[45px] pl-2.5'} min={0} step={0.5} name={'hours'} type={"number"}
                                     placeholder={'0'} defaultValue={shiftEmployee.hours}/>
-            </label>
+            </label>}
             {specials && <label>
                 Specials: <input onChange={(e) => employeeInfoHandler(e)}
                                  className={'w-[60px] pl-2.5'} min={0} name={'specials'} type={"number"}
                                  placeholder={'0'} defaultValue={shiftEmployee.specials}/>
             </label>}
         </div>
-    );
+);
 };
 
 export default EmployeeInfoInput;

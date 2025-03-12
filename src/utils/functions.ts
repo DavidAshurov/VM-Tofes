@@ -13,15 +13,19 @@ export function getEnumKeyByValue(enumObj: any, value: string): string {
 }
 
 export function calculateTips(state: ShiftData) {
-    const {tipsSum, employees, shabat} = current(state)
-    const minWages = getMinimalWages(shabat ? 'shabat' : '')
+    let {tipsSum, employees, minWage} = current(state)
+    tipsSum -= employees.filter(emp => emp.position === Positions.bartenders).reduce((acc,curr) => acc + curr.specials,0)
+    employees = employees.filter(emp => emp.position !== Positions.bartenders)
+    const minWages = getMinimalWages(minWage)
     const minSum = employees.reduce((acc, curr) => acc + curr.hours * minWages.get(curr.wageRate)!, 0)
     if (minSum > tipsSum) {
         fulfillData(state, minWages)
     } else {
         for (let i = 0; i < 19; i++) {
-            const hours100 = employees.filter(sm => sm.wageRate === '100').reduce((acc, curr) => acc + curr.hours, 0)
-            const tmpSum = employees.reduce((acc, curr) => acc + curr.hours * Wages.get(curr.wageRate)![i], 0)
+            const hours100 = employees.filter(sm => sm.wageRate === '100')
+                .reduce((acc, curr) => acc + curr.hours, 0)
+            const tmpSum = employees.filter(emp => emp.position !== Positions.bartenders)
+                .reduce((acc, curr) => acc + curr.hours * Wages.get(curr.wageRate)![i], 0)
             let restMoney = tipsSum - tmpSum
             if (restMoney > hours100 * 3) {
                 continue
@@ -49,7 +53,11 @@ function fulfillData(state:ShiftData, hourWages:Map<string,number>) {
         const currEmp = state.employees[i]
         const inHour = state.employees[i].inHour = hourWages.get(currEmp.wageRate)!
         let sum = 0;
-        sum = state.employees[i].sum = inHour! * currEmp.hours
+        if (currEmp.position === Positions.bartenders) {
+            sum = state.employees[i].sum = currEmp.specials
+        } else {
+            sum = state.employees[i].sum = inHour! * currEmp.hours
+        }
         if (currEmp.position === Positions.serviceManagers || currEmp.position === Positions.waiters) {
             if (!isNaN(currEmp.specials)) {
                 state.employees[i].sum = sum = sum + currEmp.specials
@@ -79,7 +87,7 @@ function getMinimalWages(condition: string): Map<string, number> {
                 ['100', 50],
                 ['90', 45],
                 ['80', 40],
-                ['MM', 38],
+                ['MM', 40],
                 ['R', 35],
             ])
         default:
