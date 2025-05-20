@@ -19,6 +19,7 @@ export interface Employee {
     id:number,
     name:string,
     hours:number,
+    fixedWage:boolean,
     inHour:number,
     sum:number,
     specials:number,

@@ -14,8 +14,12 @@ export function getEnumKeyByValue(enumObj: any, value: string): string {
 
 export function calculateTips(state: ShiftData) {
     let {tipsSum, employees, minWage} = current(state)
-    tipsSum -= employees.filter(emp => emp.position === Positions.bartenders).reduce((acc,curr) => acc + curr.specials,0)
+    tipsSum -= employees.filter(emp => emp.position === Positions.bartenders)
+        .reduce((acc, curr) => acc + curr.specials, 0)
+    tipsSum -= employees.filter(e => e.fixedWage)
+        .reduce((acc,curr) => acc + curr.inHour * curr.hours,0)
     employees = employees.filter(emp => emp.position !== Positions.bartenders)
+    employees = employees.filter(emp => !emp.fixedWage)
     const minWages = getMinimalWages(minWage)
     const minSum = employees.reduce((acc, curr) => acc + curr.hours * minWages.get(curr.wageRate)!, 0)
     if (minSum > tipsSum) {
@@ -47,11 +51,14 @@ export function calculateTips(state: ShiftData) {
 }
 
 
-function fulfillData(state:ShiftData, hourWages:Map<string,number>) {
+function fulfillData(state: ShiftData, hourWages: Map<string, number>) {
     let totalSum = 0
     for (let i = 0; i < state.employees.length; i++) {
         const currEmp = state.employees[i]
-        const inHour = state.employees[i].inHour = hourWages.get(currEmp.wageRate)!
+        if (!currEmp.fixedWage) {
+            state.employees[i].inHour = hourWages.get(currEmp.wageRate)!
+        }
+        const inHour = state.employees[i].inHour
         let sum = 0;
         if (currEmp.position === Positions.bartenders) {
             sum = state.employees[i].sum = currEmp.specials

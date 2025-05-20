@@ -5,7 +5,7 @@ const CommonInfo = () => {
     const dispatch = useAppDispatch()
     const shiftInfo = useAppSelector(state => state.shiftReducer)
     return (
-        <div className={'mb-5 flex'}>
+        <div className={'flex mb-3 justify-around max-sm:h-[150px] max-sm:ml-3 max-sm:flex-col'}>
             <label>
                 Дата: <input className={'px-2'} name={'date'} type={'date'}
                              onChange={(e) => dispatch(setDate(e.target.value))}
@@ -31,7 +31,7 @@ const CommonInfo = () => {
             <label>
                 Чаевые: <input
                 onChange={(e) => dispatch(setTipsSum(e.target.value))}
-                className={'pl-3 w-[100px]'} min={0} name={"tips"} type={'number'} placeholder={'0'}
+                className={'sm:pl-3 w-[100px]'} min={0} name={"tips"} type={'number'} placeholder={'0'}
                 defaultValue={shiftInfo.tipsSum}/>
             </label>
         </div>

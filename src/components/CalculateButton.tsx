@@ -6,7 +6,7 @@ const CalculateButton = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     return (
-        <div className={'flex justify-center'}>
+        <div className={'max-sm:ml-3 sm:flex justify-center'}>
             <button
                 className={'bg-[rgba(59,130,246,1)] rounded-2xl px-3 py-1 mt-10 text-white text-xl'}
                 onClick={() => {

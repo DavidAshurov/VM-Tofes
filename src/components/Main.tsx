@@ -1,15 +1,13 @@
 import Form from "./form/Form.tsx";
-import RightSide from "./RightSide.tsx";
 import Header from "./Header.tsx";
+import CalculateButton from "./CalculateButton.tsx";
 
 const Main = () => {
     return (
         <div className={'text-text-blue'}>
             <Header/>
-            <div className={'p-2 flex'}>
-                <Form/>
-                <RightSide/>
-            </div>
+            <Form/>
+            <CalculateButton/>
         </div>
     );
 };

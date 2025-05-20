@@ -48,6 +48,7 @@ const shiftSlice = createSlice({
             state.employees.push({
                 position:action.payload,
                 wageRate:wageRate,
+                fixedWage:false,
                 id:id,
                 name:'',
                 hours:0,
@@ -72,6 +73,10 @@ const shiftSlice = createSlice({
                 state.employees[idx][property] = +value as never
             }
         },
+        setFixed: (state,action:PayloadAction<{id:number,fixedWage:boolean}>) => {
+            const idx = state.employees.findIndex(emp => emp.id === action.payload.id)
+            state.employees[idx].fixedWage = action.payload.fixedWage
+        },
         distributeTips: (state) => calculateTips(state),
     }
 })
@@ -84,6 +89,7 @@ export const {
     addShiftEmployee,
     deleteShiftEmployee,
     setEmployeeInfo,
+    setFixed,
     distributeTips
 } = shiftSlice.actions
 export default shiftSlice.reducer
